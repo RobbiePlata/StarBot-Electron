@@ -1,0 +1,54 @@
+{
+  "name": "starbot-electron",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/app.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.electron.starbot",
+    "win": {
+      "target": "nsis",
+      "icon": "src/assets/icon.ico"
+    },
+    "mac": {
+      "category": "public.app-category.games"
+    }
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RobbiePlata/StarBot-TS/issues"
+  },
+  "homepage": "https://github.com/RobbiePlata/StarBot-TS#readme",
+  "dependencies": {
+    "@angular/typescript": "^2.0.0-5d0e199",
+    "@types/electron-packager": "^14.0.0",
+    "@types/node": "^12.7.1",
+    "@types/open": "^6.2.1",
+    "@types/python-shell": "^0.4.2",
+    "@types/react": "^16.9.1",
+    "@types/readline-sync": "^1.4.3",
+    "@types/tmi.js": "^1.4.0",
+    "custom-electron-titlebar": "^3.1.0",
+    "electron-about-window": "^1.13.1",
+    "electron-is-dev": "^1.1.0",
+    "file-system": "^2.2.2",
+    "jquery": "^3.4.1",
+    "pirate-speak": "^1.0.1",
+    "python-shell": "^1.0.8",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "readline-sync": "^1.4.10",
+    "twitch": "^3.4.0",
+    "typescript": "^3.5.3"
+  },
+  "devDependencies": {
+    "electron": "6.0.12",
+    "electron-packager": "^14.0.6"
+  },
+  "types": "./lib/app.d.ts"
+}
