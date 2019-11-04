@@ -1,21 +1,24 @@
 import * as path from 'path';
 import openAboutWindow, { AboutWindowInfo } from 'electron-about-window';
 import { app, BrowserWindow, Menu, Notification, Tray } from "electron";
+import { spawn, exec } from 'child_process';
+import Settings from './Settings';
 
-const streamname = "rootrob";
-var darkmode = true;
-
-let mainWindow: BrowserWindow;
-let winrateWindow: BrowserWindow;
-let replaypackWindow: BrowserWindow;
-let settingsWindow: BrowserWindow;
+let settings = new Settings();
+let mainWindow: BrowserWindow, winrateWindow: BrowserWindow, replaypackWindow: BrowserWindow, settingsWindow: BrowserWindow;
 let apptray: Tray;
 
 app.on('ready', () => {
   // if credentials exist then ->
+  settings.InitializeSettings();
   ActivateAppTray();
   CreateMainWindow();
-  let myNotification = new Notification({title: "StarBot", body: "Running", icon: path.join(__dirname + '/assets/iconimage.png')});
+
+  if(settings.RecordStats){
+    spawn('python',[__dirname + '/Stats.py']);
+  }
+
+let myNotification = new Notification({title: "StarBot", body: "Running", icon: path.join(__dirname + '/assets/iconimage.png')});
   myNotification.show();
 });
 
@@ -45,11 +48,11 @@ function CreateMainWindow() {
   const menu = Menu.buildFromTemplate(MainTemplate);
   Menu.setApplicationMenu(menu);
 
-  if(darkmode == true){
-    mainWindow.loadURL('https://www.twitch.tv/popout/' + streamname + '/chat?darkpopout')
+  if(settings.DarkMode){
+    mainWindow.loadURL('https://www.twitch.tv/popout/' + settings.StreamName + '/chat?darkpopout')
   }
   else{
-    mainWindow.loadURL('https://www.twitch.tv/popout/' + streamname + '/chat?popout')
+    mainWindow.loadURL('https://www.twitch.tv/popout/' + settings.StreamName + '/chat?popout')
   }
 }
 
@@ -72,7 +75,7 @@ function CreateWinRateWindow(){
     height: 300,
     width: 400,
   });
-  winrateWindow.loadURL('file://' + __dirname + '/winrate.html');
+  winrateWindow.loadURL('file://' + __dirname + '/forms/winrates.html');
   winrateWindow.removeMenu();
 }
 
@@ -154,14 +157,14 @@ const MainTemplate: Electron.MenuItemConstructorOptions[] = [
         label: 'Light Mode',
         click() {
           darkmode = false;
-          mainWindow.loadURL('https://www.twitch.tv/popout/' + streamname + '/chat?popout')
+          mainWindow.loadURL('https://www.twitch.tv/popout/' + settings.StreamName + '/chat?popout')
         }
       },
       {
         label: 'Dark Mode',
         click() {
           darkmode = true;
-          mainWindow.loadURL('https://www.twitch.tv/popout/' + streamname + '/chat?darkpopout')
+          mainWindow.loadURL('https://www.twitch.tv/popout/' + settings.StreamName + '/chat?darkpopout')
         }
       },
       { role: 'reload' },

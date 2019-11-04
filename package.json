@@ -26,6 +26,7 @@
   "homepage": "https://github.com/RobbiePlata/StarBot-TS#readme",
   "dependencies": {
     "@angular/typescript": "^2.0.0-5d0e199",
+    "@types/electron-json-storage": "^4.0.0",
     "@types/electron-packager": "^14.0.0",
     "@types/node": "^12.7.1",
     "@types/open": "^6.2.1",
@@ -36,6 +37,8 @@
     "custom-electron-titlebar": "^3.1.0",
     "electron-about-window": "^1.13.1",
     "electron-is-dev": "^1.1.0",
+    "electron-json-storage": "^4.1.8",
+    "electron-store": "^5.0.0",
     "file-system": "^2.2.2",
     "jquery": "^3.4.1",
     "pirate-speak": "^1.0.1",
