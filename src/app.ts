@@ -10,6 +10,7 @@ let apptray: Tray;
 
 app.on('ready', () => {
   settings = new SettingsHolder();
+  
   // if credentials exist then ->
   ActivateAppTray();
   CreateMainWindow();
@@ -39,24 +40,43 @@ function ActivateAppTray(){
 }
 
 function CreateMainWindow() { 
+  
+  mainWindow = new BrowserWindow({
+    title: "StarBot",
+    frame: false,
+    webPreferences: {
+      preload: 'prerender.js',
+      nodeIntegration: true
+    },
+    icon: path.join(__dirname + '/assets/iconimage.png'),
+    height: 960,
+    width: 540
+  });
+  
+  //mainWindow.webContents.openDevTools();
+  
+  const menu = Menu.buildFromTemplate(MainTemplate);
+  Menu.setApplicationMenu(menu);
+  mainWindow.loadURL((__dirname + '/forms/index.html'));
+
+  /*
   mainWindow = new BrowserWindow({
     title: "StarBot",
     icon: path.join(__dirname + '/assets/iconimage.png'),
     height: 960,
     width: 540
-});
+  });
+  */
 
-  const menu = Menu.buildFromTemplate(MainTemplate);
-  Menu.setApplicationMenu(menu);
-
+  /*
   if(settings.DarkMode){
     mainWindow.loadURL('https://www.twitch.tv/popout/' + settings.StreamName + '/chat?darkpopout')
   }
   else{
     mainWindow.loadURL('https://www.twitch.tv/popout/' + settings.StreamName + '/chat?popout')
   }
+*/
 }
-
 function SetupPage(){
   winrateWindow = new BrowserWindow({
     frame: false,

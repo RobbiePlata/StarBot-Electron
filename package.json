@@ -32,6 +32,7 @@
     "@types/open": "^6.2.1",
     "@types/python-shell": "^0.4.2",
     "@types/react": "^16.9.11",
+    "@types/react-dom": "^16.9.4",
     "@types/readline-sync": "^1.4.3",
     "@types/tmi.js": "^1.4.0",
     "custom-electron-titlebar": "^3.1.0",
@@ -50,6 +51,7 @@
     "typescript": "^3.7.2"
   },
   "devDependencies": {
+    "copyfiles": "^2.1.1",
     "electron": "6.0.12",
     "electron-builder": "^22.1.0",
     "electron-packager": "^14.1.0"
