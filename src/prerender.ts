@@ -1,9 +1,8 @@
 // 1. Require the installed module
 const customTitlebar = require('custom-electron-titlebar');
-const path = require('path');
 
 let MyTitleBar = new customTitlebar.Titlebar({
-    backgroundColor: customTitlebar.Color.fromHex('#000000'),
+    backgroundColor: customTitlebar.Color.fromHex('#FFFFFF'),
     icon: '../assets/iconimage.png'
 });
 

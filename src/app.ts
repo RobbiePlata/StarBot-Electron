@@ -1,27 +1,21 @@
 import * as path from 'path';
 import openAboutWindow, { AboutWindowInfo } from 'electron-about-window';
 import { app, BrowserWindow, Menu, Notification, Tray } from "electron";
-import { spawn, exec } from 'child_process';
 import SettingsHolder from './SettingsHolder';
+//import starbot from './starbot/Main';
 
+//let bot: any;
 let settings: SettingsHolder;
 let mainWindow: BrowserWindow, winrateWindow: BrowserWindow, replaypackWindow: BrowserWindow, settingsWindow: BrowserWindow;
 let apptray: Tray;
 
 app.on('ready', () => {
+  //bot = new starbot();
   settings = new SettingsHolder();
-  
-  // if credentials exist then ->
   ActivateAppTray();
   CreateMainWindow();
-
-  if(settings.RecordStats){
-    spawn('python',[__dirname + '/Stats.py']);
-  }
-
   let myNotification = new Notification({title: "StarBot", body: "Running", icon: path.join(__dirname + '/assets/iconimage.png')});
   myNotification.show();
-
 });
 
 function ActivateAppTray(){
@@ -40,43 +34,30 @@ function ActivateAppTray(){
 }
 
 function CreateMainWindow() { 
-  
-  mainWindow = new BrowserWindow({
-    title: "StarBot",
-    frame: false,
-    webPreferences: {
-      preload: 'prerender.js',
-      nodeIntegration: true
-    },
-    icon: path.join(__dirname + '/assets/iconimage.png'),
-    height: 960,
-    width: 540
-  });
-  
-  //mainWindow.webContents.openDevTools();
+  if(!settings.DarkMode){
+
+    mainWindow = new BrowserWindow({
+      title: "StarBot",
+      frame: false,
+      webPreferences: {
+        preload: 'prerender.js',
+        nodeIntegration: true,
+        nodeIntegrationInWorker: false,
+        webviewTag: true
+      },
+      icon: path.join(__dirname + '/assets/iconimage.png'),
+      height: 960,
+      width: 540
+    });
+  }
   
   const menu = Menu.buildFromTemplate(MainTemplate);
   Menu.setApplicationMenu(menu);
   mainWindow.loadURL((__dirname + '/forms/index.html'));
-
-  /*
-  mainWindow = new BrowserWindow({
-    title: "StarBot",
-    icon: path.join(__dirname + '/assets/iconimage.png'),
-    height: 960,
-    width: 540
-  });
-  */
-
-  /*
-  if(settings.DarkMode){
-    mainWindow.loadURL('https://www.twitch.tv/popout/' + settings.StreamName + '/chat?darkpopout')
-  }
-  else{
-    mainWindow.loadURL('https://www.twitch.tv/popout/' + settings.StreamName + '/chat?popout')
-  }
-*/
+  
+  //mainWindow.webContents.openDevTools();
 }
+
 function SetupPage(){
   winrateWindow = new BrowserWindow({
     frame: false,
@@ -125,6 +106,18 @@ const MainTemplate: Electron.MenuItemConstructorOptions[] = [
     label: 'Chat', 
     submenu: [
       {
+        label: "StarBot On",
+          click(){
+            //bot.StartBot();
+          }
+      },
+      {
+        label: "StarBot On",
+          click(){
+            //bot.StopBot();
+          }
+      },
+      {
         label: "Commands",
           click(){
 
@@ -157,6 +150,20 @@ const MainTemplate: Electron.MenuItemConstructorOptions[] = [
     label: 'StarCraft', 
     submenu: [
       {
+        label: "Record Stats On",
+        click(){
+          CreateWinRateWindow();
+          
+        }
+      },
+      {
+        label: "Record Stats Off",
+        click(){
+          CreateWinRateWindow();
+          
+        }
+      },
+      {
         label: "WinRates",
         click(){
           CreateWinRateWindow();
@@ -178,14 +185,12 @@ const MainTemplate: Electron.MenuItemConstructorOptions[] = [
         label: 'Light Mode',
         click() {
           settings.SetDarkMode(false);
-          mainWindow.loadURL('https://www.twitch.tv/popout/' + settings.StreamName + '/chat?popout')
         }
       },
       {
         label: 'Dark Mode',
         click() {
           settings.SetDarkMode(true);
-          mainWindow.loadURL('https://www.twitch.tv/popout/' + settings.StreamName + '/chat?darkpopout')
         }
       },
       { role: 'reload' },
